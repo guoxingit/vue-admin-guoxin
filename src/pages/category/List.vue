@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div style="padding:1em">
+      <h1>栏目管理</h1>
     <!-- 按钮 -->
     <el-button type="primary" size="small" @click="toAddHandler">添加</el-button> 
     <el-button type="danger" size="small" @click="closeModalHandler">批量删除</el-button>
@@ -10,10 +11,11 @@
       <el-table-column prop="name" label="栏目名称"></el-table-column>
       <el-table-column prop="num" label="序号"></el-table-column>
       <el-table-column prop="parentId" label="父栏目"></el-table-column>
+      <el-table-column prop="icon" label="图片"></el-table-column>
       <el-table-column label="操作">
         <template v-slot="slot">
           <a href="" @click.prevent="toDeleteHandler(slot.row.id)">删除</a>
-          <a href="" @click.prevent="toUpdateHandler">修改</a>
+          <a href="" @click.prevent="toUpdateHandler(slot.row)">修改</a>
         </template>
       </el-table-column>
     </el-table>
@@ -26,16 +28,19 @@
       :title="title"
       :visible.sync="visible"
       width="60%">
-        ---{{form}}
+        <!-- ---{{form}} -->
       <el-form :model="form" label-width="80px">
-        <el-form-item label="编号">
-          <el-input v-model="form.id"></el-input>
-        </el-form-item>
         <el-form-item label="栏目名称">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="序号">
           <el-input v-model="form.num"></el-input>
+        </el-form-item>
+        <el-form-item label="父栏目">
+          <el-input v-model="form.parentId"></el-input>
+        </el-form-item>
+        <el-form-item label="图片">
+          <el-input v-model="form.icon"></el-input>
         </el-form-item>
         
       </el-form>
@@ -57,7 +62,7 @@ export default {
         loadData(){
             let url="http://localhost:6677/category/findAll"
         request.get(url).then((response)=>{
-            //将查询结果设置到customers
+            //将查询结果设置到category
             this.category=response.data;
         })
         },
@@ -84,13 +89,18 @@ export default {
         },
         toAddHandler(){
             this.title="录入栏目信息";
+            //更新模态框
+            this.form={
+              type:"category"
+            }
             this.visible=true;
         },
         closeModalHandler(){
             this.visible=false;
         },
-        toUpdateHandler(){
+        toUpdateHandler(row){
             this.title="修改栏目信息";
+            this.form=row;
             this.visible=true;
         },
         toDeleteHandler(id){
@@ -100,10 +110,17 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$message({
+          //     调用后台接口         查看 alert(id);
+          let url = "http://localhost:6677/category/deleteById?id="+id;
+          request.get(url).then((response)=>{
+            //刷新数据
+            this.loadData();
+            //提示结果
+            this.$message({
             type: 'success',
-            message: '删除成功!'
+            message: response.message
           });
+          })
         })
         }
     },
