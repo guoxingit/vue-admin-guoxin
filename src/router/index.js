@@ -133,7 +133,7 @@ export const constantRoutes = [
         path: 'list',
         name: 'AddressList',
         component: () => import('@/pages/address/List'),
-        meta: { title: 'address', icon: 'user' }
+        meta: { title: '地址管理', icon: 'user' }
       }
     ]
   },
@@ -145,7 +145,7 @@ export const constantRoutes = [
         path: 'list',
         name: 'CommentList',
         component: () => import('@/pages/comment/List'),
-        meta: { title: 'comment', icon: 'user' }
+        meta: { title: '评论管理', icon: 'user' }
       }
     ]
   },
@@ -157,7 +157,7 @@ export const constantRoutes = [
         path: 'list',
         name: 'OrderList',
         component: () => import('@/pages/order/List'),
-        meta: { title: 'order', icon: 'user' }
+        meta: { title: '订单管理', icon: 'user' }
       }
     ]
   },

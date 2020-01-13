@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '家政服务系统',
+  title: '网上订餐平台',
 
   /**
    * @type {boolean} true | false
